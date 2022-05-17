@@ -10,7 +10,7 @@ function ListProjects(){
     const dispatch=useDispatch();
 
     const projects=useSelector((state)=> state.projectSliceInfos.entities);
-      const deleteResult=useSelector((state)=> state.projectSliceInfos)
+      const deleteProjectState=useSelector((state)=> { return state.deleteProjectSliceInfos})
 
 
       useEffect(() => {
@@ -23,8 +23,9 @@ function ListProjects(){
 
 
         useEffect((state) => {
-           console.log("deleted: "+JSON.stringify(state));
-        }, [deleteResult]);
+            dispatch(getAllProjectsThunk());
+            console.log("deleted: "+JSON.stringify(state));
+        }, [deleteProjectState]);
 
 
 
