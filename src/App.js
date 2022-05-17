@@ -1,24 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
-
+import TaskHeader from "./components/todos/TaskHeader";
+import TaskList from "./components/todos/TaskList";
+import TaskForm from "./components/todos/TaskForm";
+import {Provider} from "react-redux";
+import {store} from "./reducers/store";
+import ListProjects from "./components/projects/ListProjects";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Provider store={store}>
+    <div className="container-fluid">
+{/*
+        <TaskHeader/>
+          <TaskList/>
+          <footer>
+              <TaskForm/>
+          </footer>*/}
     </div>
+
+          <br/>
+          <br/>
+
+
+          <div>
+              <h1>Gestion des projets</h1>
+              <ListProjects />
+
+
+          </div>
+      </Provider>
   );
 }
 
