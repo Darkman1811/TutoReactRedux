@@ -1,31 +1,22 @@
-import axios from "axios";
-import {useState} from "react";
+
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import ProjectItem from "./ProjectItem";
-import {deleteProjectsThunk, getAllProjects, getAllProjectsThunk,} from "../../reducers/ProjectReducer";
+import { getAllProjectsThunk,} from "../../reducers/ProjectReducer";
+import {rootReducer} from "../../reducers/store";
 
 function ListProjects(){
 
     const dispatch=useDispatch();
 
-    const projects=useSelector((state)=> state.projectSliceInfos.entities);
-      const deleteProjectState=useSelector((state)=> { return state.deleteProjectSliceInfos})
+    const projects=useSelector((state)=> state.rootReducer.projectSliceInfos.entities);
+    const deleteProjectState=useSelector((state)=> { return state.rootReducer.deleteProjectSliceInfos});
+
+           useEffect((state) => {
+               dispatch(getAllProjectsThunk());
+           }, [deleteProjectState]);
 
 
-      useEffect(() => {
-          dispatch(getAllProjectsThunk());
-      }, []);
-
-        useEffect((state) => {
-            console.log("Gell All projects: "+JSON.stringify(state));
-        } ,[projects]);
-
-
-        useEffect((state) => {
-            dispatch(getAllProjectsThunk());
-            console.log("deleted: "+JSON.stringify(state));
-        }, [deleteProjectState]);
 
 
 

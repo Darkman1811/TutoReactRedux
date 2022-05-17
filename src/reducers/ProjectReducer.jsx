@@ -61,7 +61,6 @@ export const deleteProjectsThunk = createAsyncThunk(
        await deleteProjectService(projectId).then((value)=>{
             response=value.data;
         });
-        console.log("delete reducer: "+projectId)
         return response;
     }
 );
@@ -92,7 +91,6 @@ export const deleteProjectSlice= createSlice({
     extraReducers: {
         [deleteProjectsThunk.fulfilled]:(state,{payload})=>{
             state.loading=false
-            console.log("delete it: "+JSON.stringify(payload));
         }
     }
 })
