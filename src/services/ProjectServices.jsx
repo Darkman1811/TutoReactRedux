@@ -3,10 +3,10 @@ import axios from "axios";
 const    headers = {'Access-Control-Allow-Origin': '*'}
 
 export const addProjectService= async (project) => {
-    await axios.post("http://localhost:8080/projects", project, headers).then(project => {
-       return  project;
+   return await axios.post("http://localhost:8080/projects", project, headers).then(project => {
+       return  project.data;
     })
-    return null;
+
 }
 
 export const getAllProjectService=  () => {
@@ -19,11 +19,10 @@ export const deleteProjectService=  (id) => {
 }
 
 
-export const getAllProjectService2=  () => {
-    axios.get("http://localhost:8080/projects", headers).then(projectList => {
-        console.log("projectlist: ");
+export const getProjectByIdService= async (id:number) => {
+   return await  axios.get("http://localhost:8080/projects/"+id, headers).then(project => {
 
-        return   projectList.data;
+         return   project.data;
     })
 
 }

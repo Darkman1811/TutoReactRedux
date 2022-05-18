@@ -6,6 +6,8 @@ import TaskForm from "./components/todos/TaskForm";
 import {Provider} from "react-redux";
 import {store} from "./reducers/store";
 import ListProjects from "./components/projects/ListProjects";
+import {AddProject} from "./components/projects/AddProject";
+import UpdateProject from "./components/projects/UpdateProject";
 function App() {
   return (
       <Provider store={store}>
@@ -27,6 +29,17 @@ function App() {
           <div>
 
               <h1>Gestion des projets</h1>
+<br/>
+<br/>
+<br/>
+              <AddProject/>
+              <br/>
+              <br/>
+              <br/>
+              <UpdateProject/>
+              <br/>
+              <br/>
+              <br/>
               <ListProjects />
 
 

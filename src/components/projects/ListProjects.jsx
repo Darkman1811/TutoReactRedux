@@ -2,7 +2,7 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import ProjectItem from "./ProjectItem";
-import { getAllProjectsThunk,} from "../../reducers/ProjectReducer";
+import {getAllProjectsThunk, resetAddProjects,} from "../../reducers/ProjectReducer";
 import {rootReducer} from "../../reducers/store";
 
 function ListProjects(){
@@ -11,12 +11,16 @@ function ListProjects(){
 
     const projects=useSelector((state)=> state.rootReducer.projectSliceInfos.entities);
     const deleteProjectState=useSelector((state)=> { return state.rootReducer.deleteProjectSliceInfos});
+    const addProjectState=useSelector((state)=> { return state.rootReducer.addProjectSliceInfos});
 
            useEffect((state) => {
                dispatch(getAllProjectsThunk());
            }, [deleteProjectState]);
 
-
+    useEffect(() => {
+        dispatch(getAllProjectsThunk());
+        dispatch(resetAddProjects())
+    }, [addProjectState]);
 
 
 

@@ -1,6 +1,11 @@
 import {configureStore, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {deleteProjectService, getAllProjectService} from "../services/ProjectServices";
+import {
+    addProjectService,
+    deleteProjectService,
+    getAllProjectService,
+    getProjectByIdService
+} from "../services/ProjectServices";
 import {Project} from "../components/projects/interfaces";
 import {useDispatch} from "react-redux";
 
@@ -66,7 +71,7 @@ export const deleteProjectsThunk = createAsyncThunk(
 );
 
 // Modéle du DTO de retour
-interface deleteProjectState {
+export interface deleteProjectState {
     entities: Project[],
     loading: 'idle' | 'pending' | 'succeeded' | 'failed',
     error:null
@@ -81,7 +86,7 @@ const initialDeleteProject:ProjectState= {
 
 // le réducer en question
 export const deleteProjectSlice= createSlice({
-    name:"project",
+    name:"deleteProject",
     initialState:initialDeleteProject ,
     reducers:{
         resetDeleteProjects:(state)=> {
@@ -94,4 +99,104 @@ export const deleteProjectSlice= createSlice({
         }
     }
 })
+
+//=======================================  TO ADD A  PROJECT  =======================================================
+
+
+
+// Fonction d'appel asyncrone au service
+export const addProjectThunk = createAsyncThunk(
+    'projects/add',
+    async (project, thunkAPI) => {
+        let response = initialProjectsList;
+        await addProjectService(project).then((value)=>{
+            response=value.data;
+        });
+        return response;
+    }
+);
+
+// Modéle du DTO de retour
+interface addProjectState {
+    entities: Project,
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
+    error:null
+};
+
+// Valeur initial du DTO de retour
+const initialAddProject:addProjectState= {
+    entities: {id: 0, name: ""},
+    loading: 'idle'
+};
+
+// le reducer en question
+export const addProjectSlice= createSlice({
+    name:"addProject",
+    initialState:initialAddProject ,
+    reducers:{
+        resetAddProjects:(state)=> {
+            state=initialAddProject;
+        }
+    },
+    extraReducers: {
+        [addProjectThunk.fulfilled]:(state,{payload})=>{
+            state.loading="succeeded"
+            state.entities=payload
+        }
+    }
+})
+
+
+
+
+//=======================================  TO GET ONE  PROJECT  =======================================================
+
+
+
+// Fonction d'appel asyncrone au service
+export const getOneProjectThunk = createAsyncThunk(
+    'projects/getOne',
+    async (projectId, thunkAPI) => {
+        let response = {id:0,name:""};
+        console.log("getting one project");
+        await getProjectByIdService(projectId).then((value)=>{
+            response=value;
+
+        });
+        return response;
+    }
+);
+
+// Modéle du DTO de retour
+interface getOneProjectState {
+    entities: Project,
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
+    error:null
+};
+
+// Valeur initial du DTO de retour
+const initialGetOneProject:addProjectState= {
+    entities: {id: 0, name: ""},
+    loading: 'idle'
+};
+
+// le reducer en question
+export const getOneProjectSlice= createSlice({
+    name:"addProject",
+    initialState:initialAddProject ,
+    reducers:{
+        resetAddProjects:(state)=> {
+            state=initialAddProject;
+        }
+    },
+    extraReducers: {
+        [getOneProjectThunk.fulfilled]:(state,{payload})=>{
+             state.loading="succeeded"
+            state.entities=payload
+        }
+    }
+})
+
 export const ProjectReducer=projectSlice.reducer;
+
+export const {resetAddProjects}=addProjectSlice.actions;
