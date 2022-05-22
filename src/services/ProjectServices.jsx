@@ -18,10 +18,12 @@ export const deleteProjectService=  (id) => {
     return  axios.delete("http://localhost:8080/projects/"+id, headers);
 }
 
+export const updateProjectService= (project)=>{
+    return axios.put("http://localhost:8080/projects",project,headers);
+}
 
 export const getProjectByIdService= async (id:number) => {
    return await  axios.get("http://localhost:8080/projects/"+id, headers).then(project => {
-
          return   project.data;
     })
 

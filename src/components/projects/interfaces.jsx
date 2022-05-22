@@ -1,4 +1,7 @@
 export interface Project{
     id:number,
-    name:string
+    name:string,
+    duration?:string,
+    startingDate?:string,
+    expenses?:number
 };

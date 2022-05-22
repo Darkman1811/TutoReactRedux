@@ -1,33 +1,55 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {getOneProjectThunk} from "../../reducers/ProjectReducer";
-import {rootReducer} from "../../reducers/store";
+import {getOneProjectThunk} from "../../reducers/projectReducers/GetOneProjectReducer";
+import projectReducer from "../../reducers/ProjectReducer";
+import {useNavigate, useParams} from "react-router";
+import {updateProjectsThunk} from "../../reducers/projectReducers/UpdateProjectReducer";
+import type {Project} from "./interfaces";
+import {useForm} from "react-hook-form";
+import {resetAddProjects} from "../../reducers/projectReducers/AddProjectReducer";
 
 const UpdateProject=()=>{
 
     const dispatch=useDispatch();
-    const getOneProjectState=useSelector((state)=>  state.rootReducer.getOneProjectSliceInfos)
+    const params=useParams();
+    const navigate=useNavigate();
+    const {register}=useForm();
 
-    const [project, setProject] = useState({id:0,name:""});
+    const getOneProjectState=useSelector((state)=>  state.projectReducer.getOneProjectSliceInfos.entity);
+    const projectUpdatedState=useSelector(state => state.projectReducer.updateProjectSliceInfos);
+
+    const [project, setProject] = useState({id:0,name:"",duration:""});
     useEffect(() => {
-       dispatch(getOneProjectThunk(53));
+        let id:number=params.id;
+        dispatch(getOneProjectThunk(id));
     }, []);
 
     useEffect(() => {
         setProject(getOneProjectState);
     }, [getOneProjectState]);
 
+    useEffect(()=>{
+        if(projectUpdatedState.loading==="succeeded"){navigate("/projects")};
+        resetAddProjects();
+    },[projectUpdatedState])
+
     const updateProject=(event)=>{
         event.preventDefault();
-        console.log(project)
+        console.log("====>project:",project);
+        dispatch(updateProjectsThunk(project));
     }
 
     return (
         <form onSubmit={updateProject}>
             <label>Id du projet</label>
-            <h3>{getOneProjectState.entities.id}</h3>
+            <h3>{getOneProjectState.id}</h3>
             <label>Nom Projet</label>
-            <input type="text" value={project.name} onChange={(event)=>{setProject({id:53,name:event.target.value})}}  />
+            <input type="text" defaultValue={getOneProjectState.name} onChange={(event)=>{
+
+
+                setProject({...project,name:event.target.value})
+            }}/>
+
      <button type="submit">Modifier</button>
         </form>
     )

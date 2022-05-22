@@ -8,42 +8,33 @@ import {store} from "./reducers/store";
 import ListProjects from "./components/projects/ListProjects";
 import {AddProject} from "./components/projects/AddProject";
 import UpdateProject from "./components/projects/UpdateProject";
+import {BrowserRouter, Link, Route} from "react-router-dom";
+import {Outlet, Routes} from "react-router";
 function App() {
   return (
       <Provider store={store}>
+          <BrowserRouter>
+
+
+
+
+          <h1>Gestion des projets</h1>
+              <Link  to="/projects">Projects</Link>
+              <Link  to="/add">Add</Link>
     <div className="container-fluid">
-{/*
-        <TaskHeader/>
-          <TaskList/>
-          <footer>
-              <TaskForm/>
-          </footer>*/}
+
+
+
     </div>
 
-          <br/>
-          <br/>
 
-
-
-
-          <div>
-
-              <h1>Gestion des projets</h1>
-<br/>
-<br/>
-<br/>
-              <AddProject/>
-              <br/>
-              <br/>
-              <br/>
-              <UpdateProject/>
-              <br/>
-              <br/>
-              <br/>
-              <ListProjects />
-
-
-          </div>
+              <Routes>
+                  <Route path="/" element={<ListProjects/>}/>
+                  <Route path="/projects" element={<ListProjects/>}/>
+                  <Route path="/add" element={<AddProject/>}/>
+                  <Route path="/updateProject/:id" element={<UpdateProject/>}/>
+              </Routes>
+          </BrowserRouter>
       </Provider>
   );
 }

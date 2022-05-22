@@ -1,30 +1,49 @@
-
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import ProjectItem from "./ProjectItem";
-import {getAllProjectsThunk, resetAddProjects,} from "../../reducers/ProjectReducer";
-import {rootReducer} from "../../reducers/store";
+import {getAllProjectsThunk, resetProjects} from "../../reducers/projectReducers/GetAllProjectsReducer";
+import {resetAddProjects} from "../../reducers/projectReducers/AddProjectReducer";
+import projectReducer from "../../reducers/ProjectReducer";
+import {resetDeleteProjects} from "../../reducers/projectReducers/DeleteProjectReducer";
 
-function ListProjects(){
+function ListProjects() {
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
-    const projects=useSelector((state)=> state.rootReducer.projectSliceInfos.entities);
-    const deleteProjectState=useSelector((state)=> { return state.rootReducer.deleteProjectSliceInfos});
-    const addProjectState=useSelector((state)=> { return state.rootReducer.addProjectSliceInfos});
-
-           useEffect((state) => {
-               dispatch(getAllProjectsThunk());
-           }, [deleteProjectState]);
+    const projects = useSelector((state) => state.projectReducer.projectSliceInfos.entities);
+    const deleteProjectState = useSelector((state) => {
+        return state.projectReducer.deleteProjectSliceInfos
+    });
+    const addProjectState = useSelector((state) => {
+        return state.projectReducer.addProjectSliceInfos
+    });
 
     useEffect(() => {
+        console.log(deleteProjectState.loading);
+        if (deleteProjectState.loading === 'succeeded') {
+            dispatch(getAllProjectsThunk());
+            dispatch(resetDeleteProjects());
+        }
+    }, [deleteProjectState]);
+
+    useEffect(() => {
+      //  dispatch(resetProjects)
         dispatch(getAllProjectsThunk());
-        dispatch(resetAddProjects())
+           dispatch(resetAddProjects());
     }, [addProjectState]);
 
 
+    useEffect(() => {
+         dispatch(resetProjects());
+    }, [projects]);
 
-    return(
+
+    useEffect(() => {
+        dispatch(getAllProjectsThunk());
+    }, [])
+
+
+    return (
 
         <div className="container container-fluid">
 
@@ -32,23 +51,20 @@ function ListProjects(){
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Duration</th>
                     <th scope="col">Handle</th>
                 </tr>
                 </thead>
                 <tbody>
 
-
-           {
-                  projects?.map(
-                        (project,index)=>{
-                        return( <ProjectItem key={index} project={project}/>    )
+                {
+                    projects?.map(
+                        (project, index) => {
+                            return (<ProjectItem key={index} project={project}/>)
                         })
-
-         }
-
-
+                }
 
                 </tbody>
             </table>
@@ -56,4 +72,5 @@ function ListProjects(){
         </div>
     )
 }
+
 export default ListProjects;

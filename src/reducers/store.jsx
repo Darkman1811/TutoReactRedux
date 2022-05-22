@@ -1,19 +1,21 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {todoSlice} from "./TodoReducer";
-import {addProjectSlice, deleteProjectSlice, getOneProjectSlice, projectSlice} from "./ProjectReducer";
+import {projectSlice} from "./projectReducers/GetAllProjectsReducer";
+import {addProjectSlice} from "./projectReducers/AddProjectReducer";
+import {getOneProjectSlice} from "./projectReducers/GetOneProjectReducer";
+import {deleteProjectSlice} from "./projectReducers/DeleteProjectReducer";
+import projectReducer from "./ProjectReducer";
+
 
 export const rootReducer=combineReducers({
     todosSliceInfos: todoSlice.reducer,
-    projectSliceInfos: projectSlice.reducer,
-    deleteProjectSliceInfos: deleteProjectSlice.reducer,
-    addProjectSliceInfos: addProjectSlice.reducer,
-    getOneProjectSliceInfos: getOneProjectSlice.reducer
 
 });
 
 export const store= configureStore(
     {reducer:{
-        rootReducer
+        rootReducer,
+            projectReducer
         },
         middleware: getDefaultMiddleware =>
             getDefaultMiddleware({
